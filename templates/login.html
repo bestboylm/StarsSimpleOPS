@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SimpleOPS</title>
+    <meta name="author" content="刘明">
+    <link rel="stylesheet" href="/static/css/login.css"/>
+</head>
+<body>
+<div id="login">
+    <h1 style="text-align:center; ">StarsSimpleOPS</h1>
+    <form action="{% url 'web:login' %}" method="post">
+        {% csrf_token %}
+        <p>
+            <input type="text" name="user" id="user" placeholder="用户名">
+        </p>
+        <p>
+            <input type="password" name="password" id="password" placeholder="密码">
+            <img id="pwd_img" src="/static/images/visible.png">
+        </p>
+        <button type="submit">登录</button>
+
+    </form>
+</div>
+
+<script type="text/javascript" src="/static/js/jquery-1.12.4.js"></script>
+<script type="text/javascript">
+    $(function(){
+        document.getElementById('pwd_img').onclick = function(){
+            var pwdImg = document.getElementById("pwd_img");
+            var pwdInput = document.getElementById("password");
+            if(pwdInput.type == "password") {
+                pwdInput.type = "text";
+                pwdImg.src = "/static/images/invisible.png";
+            }else {
+                pwdInput.type = "password";
+                pwdImg.src = "/static/images/visible.png";
+            }
+        }
+    })
+</script>
+</body>
+</html>

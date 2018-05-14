@@ -1,0 +1,92 @@
+{% extends 'layout/_layout.html' %}
+
+{% block css %} {% endblock %}
+
+{% block content %}
+    <div class="demoTable">
+        <a href="{% url 'web:add_app' %}" class="layui-btn">新增</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        搜索ID：
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+
+    <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+{% endblock %}
+
+{% block js %}
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+
+            //方法级渲染
+            table.render({
+                elem: '#LAY_table_user'
+                ,url: '{% url 'web:app_json' %}'
+                ,cols: [[
+                    {checkbox: true, fixed: true}
+                    ,{field:'id', title: 'ID', width:80, sort: true, fixed: true}
+                    ,{field:'name', title: '应用名', width:200, sort: true}
+                    ,{field:'command', title: '详细命令', sort: true}
+                    ,{title: '选项', width:80, align:'center', toolbar: '#barDemo'}
+                ]]
+                ,id: 'testReload'
+                ,page: true
+                ,height: 315
+            });
+
+            var $ = layui.$, active = {
+                reload: function(){
+                    var demoReload = $('#demoReload');
+
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        ,where: {
+                            key: {
+                                id: demoReload.val()
+                            }
+                        }
+                    });
+                }
+            };
+
+            //监听工具条
+            table.on('tool(user)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'release'){
+                    layer.confirm('确定发布么', function(index){
+                        layer.close(index);  //点击确定后关闭弹框
+                        $.ajax({
+                            url: "{% url 'web:release_app' %}",
+                            type: "get",
+                            data:{"aid":data.id},
+                            dataType: "json",
+                            success: function(data){
+                                if(data.code==0){
+                                    layer.msg("发布成功", {icon: 6});
+                                }else{
+                                    layer.msg("发布失败", {icon: 5},data.error);
+                                    return false;
+                                }
+                            }
+
+                        })
+                    });
+                }
+            });
+
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="release">发布</a>
+    </script>
+{% endblock %}
