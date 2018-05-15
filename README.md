@@ -23,7 +23,7 @@ sqlite3
 
 
 
-[Google](# "demo页")
+[Demo](# "demo页")
 ## 登录页面
 ![Alt text](./static/images/upload/登录界面.png)
 
