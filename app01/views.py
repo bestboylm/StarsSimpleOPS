@@ -41,6 +41,7 @@ def auth_login(func):
             return redirect(reverse('web:login'))
     return inner
 
+
 def user_verify(username, password):
     user_info = models.UserInfo.objects.filter(name=username, password=password).first()
     if not user_info:
@@ -214,13 +215,11 @@ class ReleaseProject(View):
         try:
             aid = request.GET.get('aid')
             cmd = models.Business.objects.filter(id=aid).values('command').first()
-            # print(cmd, cmd['command'])
             cmd = cmd['command'].split()
-            print(cmd)
             import subprocess
-            # res = subprocess.check_call(cmd)
-            time.sleep(3)
-            res = 0
+            res = subprocess.check_call(cmd, shell=True)
+            # time.sleep(3)
+            # res = 0
             if res:
                 response.code = 1001
 
