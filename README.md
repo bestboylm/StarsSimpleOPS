@@ -8,10 +8,10 @@ Django
 </strong></p>
 
 ## 环境
-操作系统 Centos7
-Django 1.11.7
-Python 3.6.1
-sqlite3
++ 操作系统 Centos7
++ Django 1.11.7
++ Python 3.6.1
++ sqlite3
 
 ## 依赖
 + 暂无
