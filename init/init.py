@@ -11,14 +11,14 @@ django_version = '1.11.7'
 py_version = '3.6.1'
 web_dir = '/data/wwwroot/'
 
-django_project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-django_project_name = django_project_dir.split('/')[-1]
-django_web_dir = os.path.join(web_dir,django_project_name)
-
-if not os.path.isdir(web_dir):
-    os.makedirs(web_dir)
-
 if __name__ == "__main__":
+    django_project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    django_project_name = django_project_dir.split('/')[-1]
+    django_web_dir = os.path.join(web_dir, django_project_name)
+
+    if not os.path.isdir(web_dir):
+        os.makedirs(web_dir)
+
     try:
         subprocess.check_call('/bin/bash install_pyenv.sh',shell=True)
     except subprocess.CalledProcessError:
